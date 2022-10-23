@@ -4,6 +4,9 @@ import utils.DatabaseInformation;
 import utils.Query;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Donor;
 
 public class DatabaseConnection {
@@ -55,14 +58,48 @@ public class DatabaseConnection {
             preparedStatement = con.prepareStatement(Query.addDonor);
             preparedStatement.setString(1, donor.getName());
             preparedStatement.setString(2, donor.getLastname());
-            preparedStatement.setString(3, String.valueOf(donor.getAge()));
-            preparedStatement.setString(4, String.valueOf(donor.getIdentityNumber()));
+            preparedStatement.setInt(3, donor.getAge());
+            preparedStatement.setInt(4, donor.getIdentityNumber());
             preparedStatement.setString(5, donor.getBloodGroup());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public List<Donor> findDonorList() throws SQLException {
+
+        statement = con.createStatement();
+        final List<Donor> donorList = new ArrayList<>();
+        String query = Query.findAllDonor + "donor";
+
+        try {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                String name = resultSet.getString("name");
+                String lastname = resultSet.getString("lastname");
+                int age = resultSet.getInt("age");
+                int identityNumber = resultSet.getInt("identity_number");
+                String bloodGroup = resultSet.getString("blood_group");
+                donorList.add(new Donor(name,lastname,age,identityNumber,bloodGroup));
+            }
+            return donorList;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void getBloodByIdentiyNumber(int identityNumber){
+        String query = Query.getBlood;
+
+        try {
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1,identityNumber); //
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
