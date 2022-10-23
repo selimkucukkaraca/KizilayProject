@@ -6,6 +6,8 @@ import service.DonorService;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class DonorForm {
     public JPanel rootPanel;
@@ -18,6 +20,7 @@ public class DonorForm {
 
     private final DonorService donorService = new DonorService();
     public DonorForm() {
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -29,6 +32,51 @@ public class DonorForm {
 
                 donorService.addDonor(new Donor(name,lastname,age,identiyNumber,bloodGroup));
 
+            }
+        });
+        nameField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == 10) {
+                    lastnameField.requestFocus();
+                }
+            }
+        });
+        lastnameField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == 10) {
+                    ageField.requestFocus();
+                }
+            }
+        });
+        ageField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == 10) {
+                    identiynumberField.requestFocus();
+                }
+            }
+        });
+        identiynumberField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == 10) {
+                    bloodgroupField.requestFocus();
+                }
+            }
+        });
+        bloodgroupField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == 10) {
+                    addButton.doClick();
+                }
             }
         });
     }

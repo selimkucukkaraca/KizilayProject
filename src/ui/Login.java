@@ -20,7 +20,6 @@ public class Login {
     private JLabel warnLabel;
 
     private final AdminService adminService = new AdminService();
-    public static String admin;
 
 
     public Login() {

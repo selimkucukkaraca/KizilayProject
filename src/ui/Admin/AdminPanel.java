@@ -5,17 +5,29 @@ import service.DonorService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Vector;
 
 public class AdminPanel {
     public JPanel rootPanel;
     private JTable bloodGroupTable;
     private JButton takeBloodButton;
+    private JTextField aramaCubugu;
 
 
     private final DonorService donorService = new DonorService();
+
+
+    public void dinamikAra(String ara) {
+
+        TableRowSorter<DefaultTableModel> tableModelTableRowSorter = new TableRowSorter<DefaultTableModel>((DefaultTableModel) bloodGroupTable.getModel());
+        bloodGroupTable.setRowSorter(tableModelTableRowSorter);
+        tableModelTableRowSorter.setRowFilter(RowFilter.regexFilter(ara));
+    }
 
 
     public AdminPanel(){
@@ -36,8 +48,6 @@ public class AdminPanel {
         bloodGroupTable.setModel(tableModel);
 
 
-
-
         takeBloodButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,10 +59,15 @@ public class AdminPanel {
                 }else {
                     JOptionPane.showMessageDialog(rootPanel,"silme islemi iptal edildi.");
                 }
+            }
+        });
 
 
-
-
+        aramaCubugu.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String ara = aramaCubugu.getText();
+                dinamikAra(ara);
             }
         });
     }
